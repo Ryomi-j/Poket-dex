@@ -6,10 +6,23 @@ interface PokeNameChipProps {
 }
 
 export const PoketNameChip = (props: PokeNameChipProps) => {
+	const renderNumber = (id: number) => {
+		const digits = 3
+		const numStr = id.toString();
+		
+		if(numStr.length >= digits) return numStr
+
+		let result = ''
+		for(let i = 0; i < digits - numStr.length; i++){
+			result += 0
+		}
+		return `${result}${numStr}`
+	}
+
 	return (
 		<Chip>
 			<NumberChip>
-				<Number>{props.id}</Number>
+				<Number>{renderNumber(props.id)}</Number>
 			</NumberChip>
 			<Text>{props.name}</Text>
 		</Chip>
