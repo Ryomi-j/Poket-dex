@@ -4,6 +4,7 @@ import { PoketMarkChip } from "../Common/PoketMarkChip";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { PokemonDetailType, fetchPokemonDetail } from "../SVC/PokemonService";
+import { PokeImageSkeleton } from "../Common/PoketImageSkeleton";
 
 interface PokeCardProps {
 	name: string;
@@ -24,21 +25,33 @@ export const PoketCard = (props: PokeCardProps) => {
 		})();
 	}, [props.name]);
 
-	if (!pokemon) {
-		return null;
+	if(!pokemon){
+		return (
+			<Item color={"#ffca09"}>
+				<Header>
+					<PoketNameChip name={'포켓몬'} color={'#ffca09'} id={0} />
+				</Header>
+				<Body>
+					<PokeImageSkeleton />
+				</Body>
+				<Footer>
+					<PoketMarkChip />
+				</Footer>
+			</Item>
+		);
 	}
 
 	return (
 		<Item onClick={handleClick} color={pokemon.color}>
-			<Header>
-				<PoketNameChip name={pokemon.koreanName} color={pokemon.color} id={pokemon.id} />
-			</Header>
-			<Body>
-				<Image src={pokemon.images.dreamWorldFront} alt={pokemon.name} />
-			</Body>
-			<Footer>
-				<PoketMarkChip />
-			</Footer>
+	<Header>
+		<PoketNameChip name={pokemon.koreanName} color={pokemon.color} id={pokemon.id} />
+	</Header>
+	<Body>
+		<Image src={pokemon.images.dreamWorldFront} alt={pokemon.name} />
+	</Body>
+	<Footer>
+		<PoketMarkChip />
+	</Footer>
 		</Item>
 	);
 };
