@@ -18,7 +18,7 @@ export const fetchPokemons = async () => {
 	return response.data;
 };
 
-interface PoketmonDetailResponseType {
+interface PokemonDetailResponseType {
 	id: number;
 	weight: number;
 	height: number;
@@ -47,11 +47,25 @@ interface PoketmonDetailResponseType {
 	}[];
 }
 
-export interface PoketmonDetailType {
+interface PoketmonSpeciesResponseType {
+	color: {
+		name: string;
+	};
+	names: {
+		name: string;
+		language: {
+			name: string;
+		};
+	}[];
+}
+
+export interface PokemonDetailType {
 	id: number;
 	weight: number;
 	height: number;
 	name: string;
+	koreanName: string;
+	color: string;
 	types: string[];
 	images: {
 		frontDefault: string;
@@ -64,13 +78,22 @@ export interface PoketmonDetailType {
 	}[];
 }
 
-export const fetchPokemonDetail = async (name: string): Promise<PoketmonDetailType> => {
+export const fetchPokemonDetail = async (name: string): Promise<PokemonDetailType> => {
 	const pokemonDetailUrl = `https://pokeapi.co/api/v2/pokemon/${name}`;
-	const response = await remote.get<PoketmonDetailResponseType>(pokemonDetailUrl);
+	const pokemonSpeciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${name}`;
+
+	const response = await remote.get<PokemonDetailResponseType>(pokemonDetailUrl);
 	const detail = response.data;
+
+	const speciesResponse = await remote.get<PoketmonSpeciesResponseType>(pokemonSpeciesUrl);
+	const species = speciesResponse.data;
+	const koreanName = species.names.find((el) => el.language.name === "ko")?.name ?? detail.name;
+
 	return {
 		id: detail.id,
 		name: detail.name,
+		color: species.color.name,
+		koreanName: koreanName,
 		height: detail.height / 10, // dm를 미터단위로 변환
 		weight: detail.weight / 10, // kg 단위
 		types: detail.types.map((el) => el.type.name),

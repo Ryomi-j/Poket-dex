@@ -3,7 +3,7 @@ import { PoketNameChip } from "../Common/PoketNameChip";
 import { PoketMarkChip } from "../Common/PoketMarkChip";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { PoketmonDetailType, fetchPokemonDetail } from "../SVC/PoketmonService";
+import { PokemonDetailType, fetchPokemonDetail } from "../SVC/PokemonService";
 
 interface PokeCardProps {
 	name: string;
@@ -11,7 +11,7 @@ interface PokeCardProps {
 
 export const PoketCard = (props: PokeCardProps) => {
 	const navigate = useNavigate();
-	const [pokemon, setPokmon] = useState<PoketmonDetailType | null>(null);
+	const [pokemon, setPokmon] = useState<PokemonDetailType | null>(null);
 
 	const handleClick = () => {
 		navigate(`/pokemon/${props.name}`);
@@ -29,9 +29,9 @@ export const PoketCard = (props: PokeCardProps) => {
 	}
 
 	return (
-		<Item onClick={handleClick}>
+		<Item onClick={handleClick} color={pokemon.color}>
 			<Header>
-				<PoketNameChip name={pokemon.name} id={pokemon.id} />
+				<PoketNameChip name={pokemon.koreanName} color={pokemon.color} id={pokemon.id} />
 			</Header>
 			<Body>
 				<Image src={pokemon.images.dreamWorldFront} alt={pokemon.name} />
@@ -43,7 +43,7 @@ export const PoketCard = (props: PokeCardProps) => {
 	);
 };
 
-const Item = styled.li`
+const Item = styled.li<{ color: string }>`
 	display: flex;
 	flex-direction: column;
 	padding: 8px;
@@ -61,7 +61,7 @@ const Item = styled.li`
 	}
 
 	&:active {
-		background-color: yellow;
+		background-color: ${(props) => props.color};
 		opacity: 0.8;
 		transition: background-color 0s;
 	}

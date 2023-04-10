@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 import { PoketCardList } from "./List/PoketCardList";
-import { PoketmonDetail } from "./Detail/PoketmonDetail";
+import { PokemonDetail } from "./Detail/PokemonDetail";
 
 export const PageNavigator = () => {
 	return (
 		<Routes>
 			<Route path="/" element={<PoketCardList />} />
-			<Route path="/poketmon/:name" element={<PoketmonDetail />} />
+			<Route path="/pokemon/:name" element={<PokemonDetail />} />
 		</Routes>
 	);
 };

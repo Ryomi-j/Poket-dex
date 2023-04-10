@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { PoketCard } from "./PoketCard";
 import { useEffect, useState } from "react";
-import { PokemonListResponseType, fetchPokemons } from "../SVC/PoketmonService";
+import { PokemonListResponseType, fetchPokemons } from "../SVC/PokemonService";
 
 export const PoketCardList = () => {
 	// PokemonListResponseType을 useState로 저장하여 초기값을 넣어줌

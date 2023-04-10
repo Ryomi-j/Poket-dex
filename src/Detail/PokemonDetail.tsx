@@ -1,13 +1,30 @@
 import styled from "@emotion/styled";
 import { PoketMarkChip } from "../Common/PoketMarkChip";
+import { useEffect, useState } from "react";
+import { PokemonDetailType, fetchPokemonDetail } from "../SVC/PokemonService";
+import { useParams } from "react-router-dom";
 
-const TempImgUrl = `https://www.pokemon.com/static-assets/app/static3/img/og-default-image.jpeg`;
+export const PokemonDetail = () => {
+	const { name } = useParams();
+	const [pokemon, setPokmon] = useState<PokemonDetailType | null>(null);
 
-export const PoketmonDetail = () => {
+	useEffect(() => {
+		if (!name) return;
+
+		(async () => {
+			const detail = await fetchPokemonDetail(name);
+			setPokmon(detail);
+		})();
+	}, [name]);
+
+	if (!name || !pokemon) {
+		return null;
+	}
+
 	return (
 		<Container>
 			<ImageContainer>
-				<Image src={TempImgUrl} alt="피카츄" />
+				<Image src={pokemon.images.dreamWorldFront} alt={pokemon.koreanName} />
 			</ImageContainer>
 			<Divider />
 			<Body>
@@ -16,25 +33,37 @@ export const PoketmonDetail = () => {
 					<tbody>
 						<TableRow>
 							<TableHeader>번호</TableHeader>
-							<td>1</td>
+							<td>{pokemon.id}</td>
 						</TableRow>
 						<TableRow>
 							<TableHeader>이름</TableHeader>
-							<td>이상해씨</td>
+							<td>{`${pokemon.koreanName} (${pokemon.name})`}</td>
+						</TableRow>
+						<TableRow>
+							<TableHeader>타입</TableHeader>
+							<td>{pokemon.types.toString()}</td>
+						</TableRow>
+						<TableRow>
+							<TableHeader>키</TableHeader>
+							<td>{pokemon.height} m</td>
+						</TableRow>
+						<TableRow>
+							<TableHeader>몸무게</TableHeader>
+							<td>{pokemon.weight} kg</td>
 						</TableRow>
 					</tbody>
 				</Table>
 				<h2>능력치</h2>
 				<Table>
 					<tbody>
-						<TableRow>
-							<TableHeader>hp</TableHeader>
-							<td>45</td>
-						</TableRow>
-						<TableRow>
-							<TableHeader>attack</TableHeader>
-							<td>49</td>
-						</TableRow>
+						{pokemon.baseStats.map((stat) => {
+							return (
+								<TableRow key={stat.name}>
+									<TableHeader>{stat.name}</TableHeader>
+									<td>{stat.value}</td>
+								</TableRow>
+							);
+						})}
 					</tbody>
 				</Table>
 			</Body>
