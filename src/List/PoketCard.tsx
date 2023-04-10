@@ -1,12 +1,18 @@
 import styled from "@emotion/styled";
 import { PoketNameChip } from "../Common/PoketNameChip";
 import { PoketMarkChip } from "../Common/PoketMarkChip";
+import { useNavigate } from "react-router-dom";
 
 const TempImgUrl = `https://www.pokemon.com/static-assets/app/static3/img/og-default-image.jpeg`;
 
 export const PoketCard = () => {
+	const navigate = useNavigate();
+	const handleClick = () => {
+		navigate(`/poketmon/피카츄`);
+	};
+
 	return (
-		<Item>
+		<Item onClick={handleClick}>
 			<Header>
 				<PoketNameChip />
 			</Header>
@@ -14,8 +20,8 @@ export const PoketCard = () => {
 				<Image src={TempImgUrl} alt="피카츄" />
 			</Body>
 			<Footer>
-                <PoketMarkChip />
-            </Footer>
+				<PoketMarkChip />
+			</Footer>
 		</Item>
 	);
 };
@@ -29,19 +35,32 @@ const Item = styled.li`
 	height: 300px;
 	border: 1px solid #c0c0c0;
 	box-shadow: 1px 1px 3px 1px #c0c0c0;
+
+	cursor: pointer;
+	transition: transform 0.3s ease-in-out;
+
+	&:hover {
+		transform: scale(1.1);
+	}
+
+	&:active {
+		background-color: yellow;
+		opacity: 0.8;
+		transition: background-color 0s;
+	}
 `;
 
 const Header = styled.section`
 	display: flex;
-    margin: 10px 0;
+	margin: 10px 0;
 `;
 
 const Body = styled.section`
 	display: flex;
-    flex: 1 1 auto;
+	flex: 1 1 auto;
 	justify-content: center;
 	align-items: center;
-    margin: 10px 0 ;
+	margin: 10px 0;
 `;
 
 const Image = styled.img`
@@ -50,6 +69,6 @@ const Image = styled.img`
 `;
 
 const Footer = styled.footer`
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 `;
