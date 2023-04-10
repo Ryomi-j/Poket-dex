@@ -2,8 +2,8 @@ import styled from "@emotion/styled";
 import { PoketNameChip } from "../Common/PoketNameChip";
 import { PoketMarkChip } from "../Common/PoketMarkChip";
 import { useNavigate } from "react-router-dom";
-
-const TempImgUrl = `https://www.pokemon.com/static-assets/app/static3/img/og-default-image.jpeg`;
+import { useEffect, useState } from "react";
+import { PoketmonDetailType, fetchPokemonDetail } from "../SVC/PoketmonService";
 
 interface PokeCardProps {
 	name: string;
@@ -11,17 +11,30 @@ interface PokeCardProps {
 
 export const PoketCard = (props: PokeCardProps) => {
 	const navigate = useNavigate();
+	const [pokemon, setPokmon] = useState<PoketmonDetailType | null>(null);
+
 	const handleClick = () => {
 		navigate(`/pokemon/${props.name}`);
 	};
 
+	useEffect(() => {
+		(async () => {
+			const detail = await fetchPokemonDetail(props.name);
+			setPokmon(detail);
+		})();
+	}, [props.name]);
+
+	if (!pokemon) {
+		return null;
+	}
+
 	return (
 		<Item onClick={handleClick}>
 			<Header>
-				<PoketNameChip name={props.name}/>
+				<PoketNameChip name={pokemon.name} id={pokemon.id} />
 			</Header>
 			<Body>
-				<Image src={TempImgUrl} alt="피카츄" />
+				<Image src={pokemon.images.dreamWorldFront} alt={pokemon.name} />
 			</Body>
 			<Footer>
 				<PoketMarkChip />
