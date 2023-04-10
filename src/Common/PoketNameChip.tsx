@@ -25,7 +25,7 @@ const NumberChip = styled.div`
 	padding: 4px 6px;
 	background-color: yellow;
 	border-radius: 16px;
-	opacity: 0.8px;
+	opacity: 0.8;
 `;
 
 const Number = styled.label`
