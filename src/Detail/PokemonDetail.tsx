@@ -3,6 +3,7 @@ import { PoketMarkChip } from "../Common/PoketMarkChip";
 import { useEffect, useState } from "react";
 import { PokemonDetailType, fetchPokemonDetail } from "../SVC/PokemonService";
 import { useParams } from "react-router-dom";
+import { PokeImageSkeleton } from "../Common/PoketImageSkeleton";
 
 export const PokemonDetail = () => {
 	const { name } = useParams();
@@ -18,7 +19,17 @@ export const PokemonDetail = () => {
 	}, [name]);
 
 	if (!name || !pokemon) {
-		return null;
+		return (
+			<Container>
+			<ImageContainer>
+				<PokeImageSkeleton />
+			</ImageContainer>
+			<Divider />
+			<Footer>
+				<PoketMarkChip />
+			</Footer>
+		</Container>
+		);
 	}
 
 	return (
@@ -87,6 +98,7 @@ const ImageContainer = styled.section`
 	justify-content: center;
 	align-items: center;
 	margin: 8px 0;
+	min-height: 350px;
 `;
 
 const Image = styled.img`
