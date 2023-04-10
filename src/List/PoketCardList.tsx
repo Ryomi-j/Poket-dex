@@ -15,7 +15,13 @@ export const PoketCardList = () => {
 	const [infiniteRef] = useInfiniteScroll({
 		loading: false,
 		hasNextPage: pokemons.next !== "",
-		onLoadMore: async () => {},
+		onLoadMore: async () => {
+			const morePokemons = await fetchPokemons(pokemons.next);
+			setPokemons({
+				...morePokemons,
+				results: [...pokemons.results, ...morePokemons.results]
+			})
+		},
 		disabled: false,
 		rootMargin: "0px 0px 400px 0px",
 	});
