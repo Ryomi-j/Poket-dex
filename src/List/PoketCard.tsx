@@ -5,16 +5,20 @@ import { useNavigate } from "react-router-dom";
 
 const TempImgUrl = `https://www.pokemon.com/static-assets/app/static3/img/og-default-image.jpeg`;
 
-export const PoketCard = () => {
+interface PokeCardProps {
+	name: string;
+}
+
+export const PoketCard = (props: PokeCardProps) => {
 	const navigate = useNavigate();
 	const handleClick = () => {
-		navigate(`/poketmon/피카츄`);
+		navigate(`/pokemon/${props.name}`);
 	};
 
 	return (
 		<Item onClick={handleClick}>
 			<Header>
-				<PoketNameChip />
+				<PoketNameChip name={props.name}/>
 			</Header>
 			<Body>
 				<Image src={TempImgUrl} alt="피카츄" />
