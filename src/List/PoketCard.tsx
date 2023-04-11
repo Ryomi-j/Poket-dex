@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { PokemonDetailType, fetchPokemonDetail } from "../SVC/PokemonService";
 import { PokeImageSkeleton } from "../Common/PoketImageSkeleton";
 import { useIntersectionObserver } from "react-intersection-observer-hook";
+import { useSelector } from "react-redux";
+import { RootState } from "../Store";
 
 interface PokeCardProps {
 	name: string;
@@ -13,8 +15,10 @@ interface PokeCardProps {
 
 export const PoketCard = (props: PokeCardProps) => {
 	const navigate = useNavigate();
-	const [ref, {entry}] = useIntersectionObserver()
-	const isVisible = entry && entry.isIntersecting
+	const ImageType = useSelector((state: RootState) => state.imageType.type);
+
+	const [ref, { entry }] = useIntersectionObserver();
+	const isVisible = entry && entry.isIntersecting;
 	const [pokemon, setPokmon] = useState<PokemonDetailType | null>(null);
 
 	const handleClick = () => {
@@ -22,7 +26,7 @@ export const PoketCard = (props: PokeCardProps) => {
 	};
 
 	useEffect(() => {
-		if(!isVisible) return;
+		if (!isVisible) return;
 
 		(async () => {
 			const detail = await fetchPokemonDetail(props.name);
@@ -30,11 +34,11 @@ export const PoketCard = (props: PokeCardProps) => {
 		})();
 	}, [props.name, isVisible]);
 
-	if(!pokemon){
+	if (!pokemon) {
 		return (
 			<Item color={"#ffca09"} ref={ref}>
 				<Header>
-					<PoketNameChip name={'포켓몬'} color={'#ffca09'} id={0} />
+					<PoketNameChip name={"포켓몬"} color={"#ffca09"} id={0} />
 				</Header>
 				<Body>
 					<PokeImageSkeleton />
@@ -48,15 +52,15 @@ export const PoketCard = (props: PokeCardProps) => {
 
 	return (
 		<Item onClick={handleClick} color={pokemon.color} ref={ref}>
-	<Header>
-		<PoketNameChip name={pokemon.koreanName} color={pokemon.color} id={pokemon.id} />
-	</Header>
-	<Body>
-		<Image src={pokemon.images.dreamWorldFront} alt={pokemon.name} />
-	</Body>
-	<Footer>
-		<PoketMarkChip />
-	</Footer>
+			<Header>
+				<PoketNameChip name={pokemon.koreanName} color={pokemon.color} id={pokemon.id} />
+			</Header>
+			<Body>
+				<Image src={pokemon.images[ImageType]} alt={pokemon.name} />
+			</Body>
+			<Footer>
+				<PoketMarkChip />
+			</Footer>
 		</Item>
 	);
 };
