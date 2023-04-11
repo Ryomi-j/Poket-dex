@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { PoketCard } from "./PoketCard";
 import { useEffect } from "react";
-import { fetchPokemonsAPI } from "../SVC/PokemonService";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 import { RootState, useAppDispatch } from "../Store";
 import { fetchPokemons } from "../Store/pokemonsSlice";
@@ -24,12 +23,7 @@ export const PoketCardList = () => {
 
 	useEffect(() => {
 		dispatch(fetchPokemons())
-
-			// (async () => {
-			// 	const pokemons = await fetchPokemonsAPI();
-			// 	setPokemons(pokemons);
-			// })();
-	}, []);
+	}, [dispatch]);
 
 	return (
 		<>
